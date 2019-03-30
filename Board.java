@@ -30,9 +30,7 @@ public class Board {
   }
 
   /////////////////////////////////////////////////
-  // Check near the drop position, within bounds,
-  // if there is one consecutive tile
-  // and the count is < 4.
+  // Check the near the drop position, if the count is < 4.
 
   public boolean statusCheck(int row, int col, char c) {
     int count = 0;
@@ -94,7 +92,7 @@ public class Board {
     while(diagCond(a-rowInc,board.length-lenOne,!condOne) && diagCond(b-colInc,board[0].length-lenTwo,!condTwo)) {
       a-=rowInc;
       b-=colInc;
-    } // Move to the end / beginning of the board, diagonally.
+    } // Move to the end or beginning of the board, diagonally.
     while(count < 4 && diagCond(a,lenOne,condOne) && diagCond(b,lenTwo,condTwo)) {
       if(board[a][b] == c) {
         count++;
