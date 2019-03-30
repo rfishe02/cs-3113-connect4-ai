@@ -37,11 +37,6 @@ public class Board {
   public boolean statusCheck(int row, int col, char c) {
     int count = 0;
     boolean win = false;
-    int tmp = col;
-
-    if(col > 3) {
-      tmp = board[0].length-col;
-    }
 
     count = checkDir(col,c,board.length,true); // Check rows
 
@@ -49,11 +44,9 @@ public class Board {
       count = checkDir(row,c,board[0].length,false); // Check cols
     }
     if(count < 4) {
-      System.out.println("SE");
       count = checkDiag(row,col,c,board.length,board[0].length,false,false,1,1); // SE
     }
     if(count < 4) {
-      System.out.println("SW");
       count = checkDiag(row,col,c,board.length,0,false,true,1,-1); // SW
     }
 
@@ -70,8 +63,9 @@ public class Board {
 
   public int checkDir(int stat, char c, int len, boolean cond) {
     int count = 0;
+    int a = 0;
     boolean flag = false;
-    for(int a = 0; dirLenCond(a,len); a++) {
+    while(count < 4 && a < len) {
       if(dirCond(c,a,stat,cond)) {
         count++;
         flag = true;
@@ -79,12 +73,9 @@ public class Board {
         count = 0;
         flag = false;
       }
+      a++;
     }
     return count;
-  }
-
-  boolean dirLenCond(int a, int len) {
-    return a < len;
   }
 
   boolean dirCond(char c, int dyn, int stat, boolean type) {
@@ -104,7 +95,7 @@ public class Board {
       a-=rowInc;
       b-=colInc;
     } // Move to the end / beginning of the board, diagonally.
-    while(diagCond(a,lenOne,condOne) && diagCond(b,lenTwo,condTwo)) {
+    while(count < 4 && diagCond(a,lenOne,condOne) && diagCond(b,lenTwo,condTwo)) {
       if(board[a][b] == c) {
         count++;
         flag = true;
