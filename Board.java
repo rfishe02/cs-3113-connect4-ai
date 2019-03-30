@@ -35,17 +35,25 @@ public class Board {
   // and the count is < 4.
 
   public boolean statusCheck(int row, int col, char c) {
-
     int count = 0;
     boolean win = false;
+    int tmp = col;
+
+    if(col > 3) {
+      tmp = board[0].length-col;
+    }
 
     count = checkDir(col,c,board.length,true); // Check rows
 
     if(count < 4) {
       count = checkDir(row,c,board[0].length,false); // Check cols
     }
-
-
+    if(count < 4) {
+      count = checkDiag(row-tmp,c,board.length,board[0].length,false,false,1,1); // SE
+    }
+    if(count < 4) {
+      count = checkDiag(row-tmp,c,board.length,0,false,true,1,-1); // SW
+    }
 
     if(count >= 4) {
       System.out.println("Winner!");
@@ -85,11 +93,20 @@ public class Board {
     }
   }
 
-  public int checkDiag(int row, char c, int lenOne, int lenTwo, boolean condOne, boolean condTwo, int rowInc, int colInc) {
+  public int checkDiag(int rowSt, char c, int lenOne, int lenTwo, boolean condOne, boolean condTwo, int rowInc, int colInc) {
     int count = 0;
-    int a = row-4;
-    int b = 0;
+    int a = 0;
+    int b = board[0].length-1;
     boolean flag = false;
+
+    /*
+    if(col < 4) {
+      rowSt = row - col;
+      colSt = 0;
+    } else {
+      rowSt = 0;
+      colSt = col - row;
+    }*/
 
     while(cond(a,lenOne,condOne) && cond(b,lenTwo,condTwo)) {
       if(board[a][b] == c) {
@@ -105,6 +122,8 @@ public class Board {
 
     return count;
   }
+
+  //checkDiag(row-tmp,c,board.length,0,false,true,1,-1); // SW
 
   boolean cond(int a, int len, boolean type) {
     if(type) {
