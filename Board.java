@@ -49,10 +49,12 @@ public class Board {
       count = checkDir(row,c,board[0].length,false); // Check cols
     }
     if(count < 4) {
-      count = checkDiag(row-tmp,c,board.length,board[0].length,false,false,1,1); // SE
+      System.out.println("SE");
+      count = checkDiag(row,col,c,board.length,board[0].length,false,false,1,1); // SE
     }
     if(count < 4) {
-      count = checkDiag(row-tmp,c,board.length,0,false,true,1,-1); // SW
+      System.out.println("SW");
+      count = checkDiag(row,col,c,board.length,0,false,true,1,-1); // SW
     }
 
     if(count >= 4) {
@@ -93,30 +95,16 @@ public class Board {
     }
   }
 
-  public int checkDiag(int rowSt, char c, int lenOne, int lenTwo, boolean condOne, boolean condTwo, int rowInc, int colInc) {
+  public int checkDiag(int row, int col, char c, int lenOne, int lenTwo, boolean condOne, boolean condTwo, int rowInc, int colInc) {
     int count = 0;
-    int a = 0;
-    int b = board[0].length-1;
+    int a = row;
+    int b = col;
     boolean flag = false;
-
-    /*
-    if(col < 4) {
-      rowSt = row - col;
-      colSt = 0;
-    } else {
-      rowSt = 0;
-      colSt = col - row;
-    }
-    if(row < 4) {
-      rowSt = 0;
-      colSt = col - row;
-    } else {
-      rowSt = row - col;
-      colSt = board.length-1;
-    }
-    */
-
-    while(cond(a,lenOne,condOne) && cond(b,lenTwo,condTwo)) {
+    while(diagCond(a-rowInc,board.length-lenOne,!condOne) && diagCond(b-colInc,board[0].length-lenTwo,!condTwo)) {
+      a-=rowInc;
+      b-=colInc;
+    } // Move to the end / beginning of the board, diagonally.
+    while(diagCond(a,lenOne,condOne) && diagCond(b,lenTwo,condTwo)) {
       if(board[a][b] == c) {
         count++;
         flag = true;
@@ -126,14 +114,11 @@ public class Board {
       }
       a+=rowInc;
       b+=colInc;
-    }
-
+    } // Count the number of consecutive tiles.
     return count;
   }
 
-  //checkDiag(row-tmp,c,board.length,0,false,true,1,-1); // SW
-
-  boolean cond(int a, int len, boolean type) {
+  boolean diagCond(int a, int len, boolean type) {
     if(type) {
       return a >= len;
     } else {
