@@ -43,15 +43,16 @@ public class Test {
 
           // AI has a turn
 
+          if(two){
+            System.out.println("Choose a row (Computer)");
+            num = Integer.parseInt(sc.nextLine());
+            two = !b.add(num,'C');
+          }
 
         } else {
           // AI has a turn
 
-
           // Human goes
-          System.out.println("Choose a row");
-          num = Integer.parseInt(sc.nextLine());
-          two = !b.add(num,'P');
 
         }
 

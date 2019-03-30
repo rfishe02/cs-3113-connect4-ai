@@ -30,25 +30,22 @@ public class Board {
   }
 
   /////////////////////////////////////////////////
-  // Check status near drop position
+  // Check near the drop position, within bounds,
+  // if there is one consecutive tile
+  // and the count is < 4.
 
   public boolean statusCheck(int row, int col, char c) {
 
     int count = 0;
     boolean win = false;
 
-    if(row+1 < board.length && board[row+1][col] == c) {
-      count = checkSouth(row,col,c);
+    count = checkDir(col,c,board.length,true); // Check rows
+
+    if(count < 4) {
+      count = checkDir(row,c,board[0].length,false); // Check cols
     }
-    if(count < 4 && col+1 < board[0].length && board[row][col+1] == c) {
-      count = checkEast(row,col,c);
-    }
-    if(count < 4 && col-1 >= 0 && board[row][col-1] == c) {
-      count = checkWest(row,col,c);
-    }
-    if(count < 4 && row-1 >= 0 && board[row-1][col] == c) {
-      count = checkNorth(row,col,c);
-    }
+
+
 
     if(count >= 4) {
       System.out.println("Winner!");
@@ -61,86 +58,60 @@ public class Board {
   /////////////////////////////////////////////////
   // Methods used to count consecutive tiles.
 
-  public int checkSouth(int row, int col, char c) {
+  public int checkDir(int stat, char c, int len, boolean cond) {
     int count = 0;
-    for(int a = row; a < board.length; a++) {
-      if(board[a][col] == c) {
+    boolean flag = false;
+    for(int a = 0; dirLenCond(a,len); a++) {
+      if(dirCond(c,a,stat,cond)) {
         count++;
-      } else {
-        break;
+        flag = true;
+      } else if(flag) {
+        count = 0;
+        flag = false;
       }
     }
     return count;
   }
 
-  public int checkEast(int row, int col, char c) {
+  boolean dirLenCond(int a, int len) {
+    return a < len;
+  }
+
+  boolean dirCond(char c, int dyn, int stat, boolean type) {
+    if(type) {
+      return board[dyn][stat] == c; // Move rows
+    } else {
+      return board[stat][dyn] == c; // Move cols
+    }
+  }
+
+  public int checkDiag(int row, char c, int lenOne, int lenTwo, boolean condOne, boolean condTwo, int rowInc, int colInc) {
     int count = 0;
-    for(int a = col; a < board[0].length; a++) {
-      if(board[row][a] == c) {
+    int a = row-4;
+    int b = 0;
+    boolean flag = false;
+
+    while(cond(a,lenOne,condOne) && cond(b,lenTwo,condTwo)) {
+      if(board[a][b] == c) {
         count++;
-      } else {
-        break;
+        flag = true;
+      } else if(flag) {
+        count = 0;
+        flag = false;
       }
-    }
-    return count;
-  }
-
-  public int checkWest(int row, int col, char c) {
-    int count = 0;
-    for(int a = col; a >= 0; a--) {
-      if(board[row][a] == c) {
-        count++;
-      } else {
-        break;
-      }
-    }
-    return count;
-  }
-
-  public int checkNorth(int row, int col, char c) {
-    int count = 0;
-    for(int a = row; a >= 0; a--) {
-      if(board[a][col] == c) {
-        count++;
-      } else {
-        break;
-      }
-    }
-    return count;
-  }
-
-  public int checkNWDiag(int row, int col, char c) {
-    int count = 0;
-
-    for(int a = row; a >= 0; a--) {
-      for(int b = col; b >= 0; b--) {
-        if(board[a][b] == c) {
-          count++;
-        } else {
-          break;
-        }
-      }
+      a+=rowInc;
+      b+=colInc;
     }
 
     return count;
   }
 
-  public int checkNEDiag(int row, int col, char c) {
-    int count = 0;
-
-    return count;
-  }
-
-  public int checkSWDiag(int row, int col, char c) {
-    int count = 0;
-
-    return count;
-  }
-
-  public int checkSEDiag(int row, int col, char c) {
-    int count = 0;
-
-    return count;
+  boolean cond(int a, int len, boolean type) {
+    if(type) {
+      return a >= len;
+    } else {
+      return a < len;
+    }
   }
 
 }
