@@ -106,7 +106,15 @@ public class Board {
     } else {
       rowSt = 0;
       colSt = col - row;
-    }*/
+    }
+    if(row < 4) {
+      rowSt = 0;
+      colSt = col - row;
+    } else {
+      rowSt = row - col;
+      colSt = board.length-1;
+    }
+    */
 
     while(cond(a,lenOne,condOne) && cond(b,lenTwo,condTwo)) {
       if(board[a][b] == c) {
