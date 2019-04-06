@@ -84,8 +84,8 @@ public class AI {
 
   //============================================================================
   // Choose an action at random, to avoid PCPCPC scenarios, which are fruitless.
-  // For max, we return the call rather than the response. We want the
-  // action that caused the state, rather than the response state.
+  // For max, we return the call action rather than the response action.
+  // We want the action that caused the state, rather than the response state.
 
   public State maxValue(State s, int alpha, int beta, int depth) {
 
