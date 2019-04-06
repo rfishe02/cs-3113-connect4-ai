@@ -40,7 +40,7 @@ public class AI {
     }
 
     State s = new State(board,row,col,0);
-    s.v = getUtility(s, char c);
+    s.v = getUtility(s, c);
     return s;
   }
 
