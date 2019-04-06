@@ -5,7 +5,8 @@ public class Test {
 
   public static void main(String[] args) {
 
-      Board b = new Board(7,7);
+      AI comp = new AI();
+      char[][] board = new char[7][7];
 
       Scanner sc = new Scanner(System.in);
       boolean one = true;
@@ -36,37 +37,58 @@ public class Test {
       while(two) {
 
         if(first) {
-          // Human goes first
+
           System.out.println("Choose a row");
           num = Integer.parseInt(sc.nextLine());
-          two = !b.add(num,'P');
-
-          // AI has a turn
+          two = !playerMove(board,num,'P');
 
           if(two){
-            System.out.println("Choose a row (Computer)");
-            num = Integer.parseInt(sc.nextLine());
-            two = !b.add(num,'C');
+            System.out.println("The computer is thinking...");
+            num = comp.alphaBetaSearch(new State(board,0,0,0));
+            two = !playerMove(board,num+1,'C');
           }
 
         } else {
-          // AI has a turn
 
-          // Human goes
+          System.out.println("The computer is thinking...");
+          num = comp.alphaBetaSearch(new State(board,0,0,0));
+          two = !playerMove(board,num+1,'C');
+
+          if(two){
+            System.out.println("Choose a row");
+            num = Integer.parseInt(sc.nextLine());
+            two = !playerMove(board,num,'P');
+          }
 
         }
 
-        b.printBoard();
+        printBoard(board);
 
       }
 
-
   }
 
+  public static void printBoard(char[][] board) {
+    for(int row = 0; row < board.length; row++) {
+      for(int col = 0; col < board[0].length; col++) {
+        System.out.print("["+board[row][col]+"] ");
+      }
+      System.out.println();
+    }
+  }
 
+  public static boolean playerMove(char[][] board, int col, char c) {
+    col = col-1;
+    int row;
 
+    for(row = board.length-1; row >= 0; row--) {
+      if(board[row][col] == '\u0000') {
+        board[row][col] = c;
+        break;
+      }
+    }
 
-
-
+    return Problem.check(board,row,col,c);
+  }
 
 }
