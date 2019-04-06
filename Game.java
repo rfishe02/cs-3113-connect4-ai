@@ -38,31 +38,35 @@ public class Game {
 
         if(first) {
 
-          System.out.println("Choose a row");
+          System.out.println("\nChoose a row, Player.");
           num = Integer.parseInt(sc.nextLine());
           two = !playerMove(board,num,'P');
 
+          Problem.printBoard(board);
+
           if(two){
-            System.out.println("The computer is thinking...");
+            System.out.println("\nThe Computer acts...");
             num = comp.alphaBetaSearch(new State(board,0,0,0));
             two = !playerMove(board,num+1,'C');
+
+            Problem.printBoard(board);
           }
 
         } else {
 
-          System.out.println("The computer is thinking...");
+          System.out.println("\nThe Computer acts...");
           num = comp.alphaBetaSearch(new State(board,0,0,0));
           two = !playerMove(board,num+1,'C');
 
           if(two){
-            System.out.println("Choose a row");
+            System.out.println("\nChoose a row, Player.");
             num = Integer.parseInt(sc.nextLine());
             two = !playerMove(board,num,'P');
+
+            Problem.printBoard(board);
           }
 
         }
-
-        Problem.printBoard(board);
 
       }
 

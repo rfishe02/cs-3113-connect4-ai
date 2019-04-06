@@ -7,7 +7,11 @@ public class Problem {
   public static boolean check(char[][] board, int row, int col, char c) {
     boolean res = false;
     if(maxCount(board,row,col,c) > 3) {
-      System.out.println("Winner!");
+      if(c == 'P') {
+        System.out.println("The Player Wins!");
+      } else {
+        System.out.println("The Computer Wins!");
+      }
       res = true;
     }
     return res;
