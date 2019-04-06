@@ -6,7 +6,7 @@ public class Problem {
 
   public static boolean check(char[][] board, int row, int col, char c) {
     boolean res = false;
-    if(maxCount(board,row,col,c) >= 4) {
+    if(maxCount(board,row,col,c) > 3) {
       System.out.println("Winner!");
       res = true;
     }
@@ -104,6 +104,17 @@ public class Problem {
       return a >= len;
     } else {
       return a < len;
+    }
+  }
+
+  //============================================================================
+
+  public static void printBoard(char[][] board) {
+    for(int row = 0; row < board.length; row++) {
+      for(int col = 0; col < board[0].length; col++) {
+        System.out.print("["+board[row][col]+"] ");
+      }
+      System.out.println();
     }
   }
 

@@ -22,7 +22,7 @@ public class AI {
   // The state is a terminal state if a player wins, or if it exceeds depth.
 
   public boolean utilityCheck(State s, int depth) {
-    return s.v >= 4 || depth > 5;
+    return s.v > 3 || depth > 7;
   }
 
   //============================================================================
@@ -64,6 +64,10 @@ public class AI {
   public int alphaBetaSearch(State start) {
     int depth = 0;
     State s = maxValue(start, Integer.MIN_VALUE, Integer.MAX_VALUE,depth);
+
+    Problem.printBoard(s.board);
+    System.out.println(s.v);
+
     return s.col;
   }
 
@@ -73,6 +77,7 @@ public class AI {
   public State maxValue(State s, int alpha, int beta, int depth) {
 
     if(utilityCheck(s,depth)) {
+      s.v = s.v * -1; // We want a scenario in which the player is really good.
       return s;
     }
 
@@ -94,9 +99,10 @@ public class AI {
         }
 
         if(tmp.v > res.v) {
-          res.v = tmp.v;
+          res.board = tmp.board;
           res.row = tmp.row;
           res.col = tmp.col;
+          res.v = tmp.v;
         }
 
       }
@@ -135,9 +141,10 @@ public class AI {
         }
 
         if(tmp.v < res.v) {
-          res.v = tmp.v;
+          res.board = tmp.board;
           res.row = tmp.row;
           res.col = tmp.col;
+          res.v = tmp.v;
         } // Set the desired values for the result.
 
       }
