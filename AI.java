@@ -76,14 +76,16 @@ public class AI {
     int depth = 0;
     State s = maxValue(start, Integer.MIN_VALUE, Integer.MAX_VALUE,depth);
 
-    Problem.printBoard(s.board);
-    System.out.println(s.v);
+    //Problem.printBoard(s.board);
+    //System.out.println(s.v);
 
     return s.col;
   }
 
   //============================================================================
   // Choose an action at random, to avoid PCPCPC scenarios, which are fruitless.
+  // For max, we return the call rather than the response. We want the
+  // action that caused the state, rather than the response state.
 
   public State maxValue(State s, int alpha, int beta, int depth) {
 
@@ -101,7 +103,7 @@ public class AI {
 
       if(!explored.contains(i) && s.board[0][i] == '\u0000') {
 
-        call = testMove(s.board,i,'C'); // Avoid returning the player move.
+        call = testMove(s.board,i,'C'); // Avoid returning the response move.
         reply = minValue(call,alpha,beta,depth+1);
 
         if(reply.v >= beta) {
