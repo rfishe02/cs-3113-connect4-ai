@@ -5,7 +5,7 @@ public class Game {
 
   public static void main(String[] args) {
 
-      AI comp = new AI();
+      AI comp = new AI(7);
       char[][] board = new char[7][7];
 
       Scanner sc = new Scanner(System.in);

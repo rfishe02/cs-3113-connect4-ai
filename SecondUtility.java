@@ -1,6 +1,10 @@
 
 public class SecondUtility extends AI {
 
+  public SecondUtility(int moves) {
+    super(moves);
+  }
+
   //============================================================================
 
 
@@ -12,7 +16,9 @@ public class SecondUtility extends AI {
 
 
   public boolean utilityCheck(State s, int depth) {
-    return true;
+    boolean res = false;
+
+    return res;
   }
 
 }

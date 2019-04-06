@@ -5,24 +5,35 @@ import java.util.Random;
 public class AI {
 
   Random rand;
-  int[] action;
+  int moves;
 
-  public AI() {
+  public AI(int moves) {
     rand = new Random();
+    this.moves = moves;
   }
 
   //============================================================================
   // For the default utility, the AI uses the number of consecutive tiles.
+  // We want a scenario in which the player is really good, we'll reverse
+  // the count, to make it a smaller value that min would prefer.
 
   public int getUtility(State s, char c) {
-    return Problem.maxCount(s.board,s.row,s.col,c);
+    if(c == 'P') {
+      return Problem.maxCount(s.board,s.row,s.col,c) * -1;
+    } else {
+      return Problem.maxCount(s.board,s.row,s.col,c);
+    }
   }
 
   //============================================================================
   // The state is a terminal state if a player wins, or if it exceeds depth.
 
   public boolean utilityCheck(State s, int depth) {
-    return s.v > 3 || depth > 7;
+    if(s.v < 0) {
+      return s.v < -3 || depth > 5;
+    } else {
+      return s.v > 3 || depth > 5;
+    }
   }
 
   //============================================================================
@@ -77,40 +88,41 @@ public class AI {
   public State maxValue(State s, int alpha, int beta, int depth) {
 
     if(utilityCheck(s,depth)) {
-      s.v = s.v * -1; // We want a scenario in which the player is really good.
       return s;
     }
 
     HashSet<Integer> explored = new HashSet<>();
-    State res = new State(null,0,0,Integer.MIN_VALUE);
-    State tmp;
-    int i = rand.nextInt(7);
+    State max = new State(null,0,0,Integer.MIN_VALUE);
+    State call;
+    State reply;
+    int i = rand.nextInt(moves);
 
-    while(explored.size() < 7) {
+    while(explored.size() < moves) {
+
       if(!explored.contains(i) && s.board[0][i] == '\u0000') {
-        tmp = minValue(testMove(s.board,i,'C'),alpha,beta,depth+1);
 
-        if(tmp.v >= beta) {
-          return tmp;
+        call = testMove(s.board,i,'C'); // Avoid returning the player move.
+        reply = minValue(call,alpha,beta,depth+1);
+
+        if(reply.v >= beta) {
+          call.setValues(reply.board,reply.v);
+          return call;
         }
 
-        if(tmp.v > alpha) {
-          alpha = tmp.v;
+        if(reply.v > alpha) {
+          alpha = reply.v;
         }
 
-        if(tmp.v > res.v) {
-          res.board = tmp.board;
-          res.row = tmp.row;
-          res.col = tmp.col;
-          res.v = tmp.v;
+        if(reply.v > max.v) {
+          max.setValues(reply.board,call.row,call.col,reply.v);
         }
 
       }
       explored.add(i);
-      i = rand.nextInt(7);
+      i = rand.nextInt(moves);
     }
 
-    return res;
+    return max;
   }
 
   //============================================================================
@@ -122,38 +134,35 @@ public class AI {
     }
 
     HashSet<Integer> explored = new HashSet<>();
-    State res = new State(null,0,0,Integer.MAX_VALUE);
-    State tmp;
-    int i = rand.nextInt(7);
+    State max = new State(null,0,0,Integer.MAX_VALUE);
+    State reply;
+    int i = rand.nextInt(moves);
 
-    while(explored.size() < 7) {
+    while(explored.size() < moves) {
 
       if(!explored.contains(i) && s.board[0][i] == '\u0000') {
 
-        tmp = maxValue(testMove(s.board,i,'P'),alpha,beta,depth+1);
+        reply = maxValue(testMove(s.board,i,'P'),alpha,beta,depth+1);
 
-        if(tmp.v <= alpha) {
-          return tmp;
+        if(reply.v <= alpha) {
+          return reply;
         }
 
-        if(tmp.v < beta) {
-          beta = tmp.v;
+        if(reply.v < beta) {
+          beta = reply.v;
         }
 
-        if(tmp.v < res.v) {
-          res.board = tmp.board;
-          res.row = tmp.row;
-          res.col = tmp.col;
-          res.v = tmp.v;
-        } // Set the desired values for the result.
+        if(reply.v < max.v) {
+          max.setValues(reply.board,reply.row,reply.col,reply.v);
+        }
 
       }
 
       explored.add(i);
-      i = rand.nextInt(7);
+      i = rand.nextInt(moves);
     }
 
-    return res;
+    return max;
   }
 
 }
