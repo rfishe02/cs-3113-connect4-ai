@@ -14,8 +14,8 @@ public class AI {
 
   //============================================================================
   // For the default utility, the AI uses the number of consecutive tiles.
-  // We want a scenario in which the player is really good, we'll reverse
-  // the count, to make it a smaller value that min would prefer.
+  // We want a scenario in which the opponent is really good, so we reverse
+  // the count for the player. It becomes a smaller value that min would prefer.
 
   public int getUtility(State s, char c) {
     if(c == 'P') {
