@@ -1,7 +1,7 @@
 
 public class Problem {
 
-  /////////////////////////////////////////////////
+  //============================================================================
   // Check the near the drop position, if the count is < 4.
 
   public static boolean check(char[][] board, int row, int col, char c) {
@@ -12,6 +12,8 @@ public class Problem {
     }
     return res;
   }
+
+  //============================================================================
 
   public static byte maxCount(char[][] board, int row, int col, char c) {
     byte count = 0;
@@ -39,8 +41,8 @@ public class Problem {
 
     return count;
   }
-  
-  /////////////////////////////////////////////////
+
+  //============================================================================
   // Methods used to count consecutive tiles.
 
   public static byte checkDir(char[][] board, int stat, char c, int len, boolean cond) {
@@ -60,6 +62,8 @@ public class Problem {
     return count;
   }
 
+  //============================================================================
+
   public static boolean dirCond(char[][] board, char c, int dyn, int stat, boolean type) {
     if(type) {
       return board[dyn][stat] == c; // Move rows
@@ -67,6 +71,8 @@ public class Problem {
       return board[stat][dyn] == c; // Move cols
     }
   }
+
+  //============================================================================
 
   public static byte checkDiag(char[][] board, int row, int col, char c, int lenOne, int lenTwo, boolean condOne, boolean condTwo, int rowInc, int colInc) {
     byte count = 0;
@@ -90,6 +96,8 @@ public class Problem {
     } // Count the number of consecutive tiles.
     return count;
   }
+
+  //============================================================================
 
   public static boolean diagCond(int a, int len, boolean type) {
     if(type) {

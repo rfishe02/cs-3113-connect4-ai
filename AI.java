@@ -11,7 +11,22 @@ public class AI {
     rand = new Random();
   }
 
-  ///////////////////////////////////////////////////////////////
+  //============================================================================
+  // For the default utility, the AI uses the number of consecutive tiles.
+
+  public int getUtility(State s, char c) {
+    return Problem.maxCount(s.board,s.row,s.col,c);
+  }
+
+  //============================================================================
+  // The state is a terminal state if a player wins, or if it exceeds depth.
+
+  public boolean utilityCheck(State s, int depth) {
+    return s.v >= 4 || depth > 5;
+  }
+
+  //============================================================================
+  // Make a deepy copy of the board and create a new state, with a utility.
 
   public State testMove(char[][] state, int col, char c) {
     char[][] board = deepCopy(state);
@@ -25,9 +40,11 @@ public class AI {
     }
 
     State s = new State(board,row,col,0);
-    s.v = Problem.maxCount(s.board,row,col,c);
+    s.v = getUtility(s, char c);
     return s;
   }
+
+  //============================================================================
 
   public char[][] deepCopy(char[][] board) {
     char[][] copy = new char[board.length][board[0].length];
@@ -41,21 +58,24 @@ public class AI {
     return copy;
   }
 
-  ///////////////////////////////////////////////////////////////
+  //============================================================================
+  // This is the alpha beta search algorithm.
 
   public int alphaBetaSearch(State start) {
     int depth = 0;
     State s = maxValue(start, Integer.MIN_VALUE, Integer.MAX_VALUE,depth);
     return s.col;
-  } // Find the state with the highest minmax value, then returns the column / action.
+  }
+
+  //============================================================================
+  // Choose an action at random, to avoid PCPCPC scenarios, which are fruitless.
 
   public State maxValue(State s, int alpha, int beta, int depth) {
 
-    if(s.v >= 4 || depth > 5) {
+    if(utilityCheck(s,depth)) {
       return s;
-    } // If we reach a terminal or end state, return utility of the state.
+    }
 
-    // else ...
     HashSet<Integer> explored = new HashSet<>();
     State res = new State(null,0,0,Integer.MIN_VALUE);
     State tmp;
@@ -67,17 +87,17 @@ public class AI {
 
         if(tmp.v >= beta) {
           return tmp;
-        } // Return the state with a greater value for beta.
+        }
 
         if(tmp.v > alpha) {
           alpha = tmp.v;
-        } // Set alpha to v if it is greater than alpha.
+        }
 
         if(tmp.v > res.v) {
           res.v = tmp.v;
           res.row = tmp.row;
           res.col = tmp.col;
-        } // Set the desired values for the result.
+        }
 
       }
       explored.add(i);
@@ -87,13 +107,14 @@ public class AI {
     return res;
   }
 
+  //============================================================================
+
   public State minValue(State s, int alpha, int beta, int depth) {
 
-    if(s.v >= 4 || depth > 5) {
+    if(utilityCheck(s,depth)) {
       return s;
-    } // If we reach a terminal or end state, return utility of the state.
+    }
 
-    // else ...
     HashSet<Integer> explored = new HashSet<>();
     State res = new State(null,0,0,Integer.MAX_VALUE);
     State tmp;
