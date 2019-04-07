@@ -18,7 +18,7 @@ public class AI {
   // the count for the player. It becomes a smaller value that min would prefer.
 
   public int getUtility(State s, char c) {
-    if(c == 'P') {
+    if(c == Problem.p) {
       return Problem.maxCount(s.board,s.row,s.col,c) * -1;
     } else {
       return Problem.maxCount(s.board,s.row,s.col,c);
@@ -79,7 +79,12 @@ public class AI {
     //Problem.printBoard(s.board);
     //System.out.println(s.v);
 
-    return s.col;
+    if(s.board == null) {
+      return -1;
+    } else {
+      return s.col;
+    }
+
   }
 
   //============================================================================
@@ -88,7 +93,6 @@ public class AI {
   // We want the action that caused the state, rather than the response state.
 
   public State maxValue(State s, int alpha, int beta, int depth) {
-
     if(utilityCheck(s,depth)) {
       return s;
     }
@@ -103,7 +107,7 @@ public class AI {
 
       if(!explored.contains(i) && s.board[0][i] == '\u0000') {
 
-        call = testMove(s.board,i,'C'); // Avoid returning the response move.
+        call = testMove(s.board,i,Problem.c); // Avoid returning the response move.
         reply = minValue(call,alpha,beta,depth+1);
 
         if(reply.v >= beta) {
@@ -130,7 +134,6 @@ public class AI {
   //============================================================================
 
   public State minValue(State s, int alpha, int beta, int depth) {
-
     if(utilityCheck(s,depth)) {
       return s;
     }
@@ -144,7 +147,7 @@ public class AI {
 
       if(!explored.contains(i) && s.board[0][i] == '\u0000') {
 
-        reply = maxValue(testMove(s.board,i,'P'),alpha,beta,depth+1);
+        reply = maxValue(testMove(s.board,i,Problem.p),alpha,beta,depth+1);
 
         if(reply.v <= alpha) {
           return reply;

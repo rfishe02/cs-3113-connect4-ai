@@ -1,18 +1,21 @@
 
 public class Problem {
 
+  static char c = 'O';
+  static char p = 'X';
+
   //============================================================================
   // Check the near the drop position, if the count is < 4.
 
-  public static boolean check(char[][] board, int row, int col, char c) {
-    boolean res = false;
+  public static int check(char[][] board, int row, int col, char c) {
+    int res = 0;
     if(maxCount(board,row,col,c) > 3) {
-      if(c == 'P') {
+      if(c == p) {
         System.out.println("The Player Wins!");
       } else {
         System.out.println("The Computer Wins!");
       }
-      res = true;
+      res = 1;
     }
     return res;
   }
@@ -53,6 +56,7 @@ public class Problem {
     byte count = 0;
     int a = 0;
     boolean flag = false;
+
     while(count < 4 && a < len) {
       if(dirCond(board,c,a,stat,cond)) {
         count++;
@@ -109,6 +113,20 @@ public class Problem {
     } else {
       return a < len;
     }
+  }
+
+  //============================================================================
+
+  public static int countSpaces(char[][] board) {
+    int spaces = 0;
+    for(int row = 0; row < board.length; row++) {
+      for(int col = 0; col < board[0].length; col++) {
+        if(board[row][col] == '\u0000') {
+          spaces++;
+        }
+      }
+    }
+    return spaces;
   }
 
   //============================================================================
