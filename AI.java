@@ -1,4 +1,10 @@
 
+// Author: Renae Fisher
+// Class: CS 3113
+// Assignment: Connect 4
+// Date: 4-9-19
+// Desc: Holds the methods the AI uses to think.
+
 import java.util.HashSet;
 import java.util.Random;
 
@@ -25,7 +31,7 @@ public class AI {
   }
 
   //============================================================================
-  // Make a deepy copy of the board and create a new state, with a utility.
+  // Use this method to generate potential states.
 
   public State testMove(char[][] state, int col, char c) {
     char[][] board = deepCopy(state);
@@ -58,14 +64,11 @@ public class AI {
   }
 
   //============================================================================
-  // This is the alpha beta search algorithm.
+  // This is the start of the alpha beta search algorithm.
 
   public int alphaBetaSearch(State start) {
     int depth = 0;
     State s = maxValue(start, Integer.MIN_VALUE, Integer.MAX_VALUE,depth);
-
-    //Status.printBoard(s.board);
-    //System.out.println(s.v);
 
     if(s.board == null) {
       return -1;
@@ -95,7 +98,7 @@ public class AI {
 
       if(!explored.contains(i) && s.board[0][i] == '\u0000') {
 
-        call = testMove(s.board,i,Status.c); // Avoid returning the response move.
+        call = testMove(s.board,i,Status.c); // Return the call, rather than the response.
         reply = minValue(call,alpha,beta,depth+1);
 
         if(reply.v >= beta) {

@@ -1,4 +1,10 @@
 
+// Author: Renae Fisher
+// Class: CS 3113
+// Assignment: Connect 4
+// Date: 4-9-19
+// Desc: Overides getUtility and utilityCheck of the AI class.
+
 public class FirstUtility extends AI {
 
   public FirstUtility(int moves) {
@@ -6,7 +12,7 @@ public class FirstUtility extends AI {
   }
 
   //============================================================================
-  // For the default utility, the AI uses the number of consecutive tiles.
+  // For the first utility, the AI uses the number of consecutive tiles.
   // We want a scenario in which the opponent is really good, so we reverse
   // the count for the player. It becomes a smaller value that min would prefer.
 

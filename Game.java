@@ -1,4 +1,10 @@
 
+// Author: Renae Fisher
+// Class: CS 3113
+// Assignment: Connect 4
+// Date: 4-9-19
+// Desc: The executable class that starts the game.
+
 import java.util.Scanner;
 
 public class Game {
@@ -8,6 +14,8 @@ public class Game {
       Scanner sc = new Scanner(System.in);
 
       AI comp = new FirstUtility(7);
+      //AI comp = new SecondUtility(7);
+
       run(sc,comp,decideFirst(sc));
 
   }

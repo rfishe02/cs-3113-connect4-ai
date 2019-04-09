@@ -1,4 +1,10 @@
 
+// Author: Renae Fisher
+// Class: CS 3113
+// Assignment: Connect 4
+// Date: 4-9-19
+// Desc: Holds static methods used to look for the winning state.
+
 public class Status {
 
   static char c = 'O';

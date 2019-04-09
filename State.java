@@ -1,4 +1,10 @@
 
+// Author: Renae Fisher
+// Class: CS 3113
+// Assignment: Connect 4
+// Date: 4-9-19
+// Desc: The class used to pass information in alphaBetaSearch.
+
 public class State {
   char[][] board;
   int row;

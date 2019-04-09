@@ -1,4 +1,10 @@
 
+// Author: Renae Fisher
+// Class: CS 3113
+// Assignment: Connect 4
+// Date: 4-9-19
+// Desc: Overides getUtility and utilityCheck of the AI class.
+
 public class SecondUtility extends AI {
 
   public SecondUtility(int moves) {
