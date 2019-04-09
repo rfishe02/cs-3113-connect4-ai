@@ -4,6 +4,8 @@
 // Assignment: Connect 4
 // Date: 4-9-19
 // Desc: Overides getUtility and utilityCheck of the AI class.
+// The AI makes moves that reduce the number of connected tiles for the player,
+// or moves that maximize its number of connected tiles.
 
 public class FirstUtility extends AI {
 

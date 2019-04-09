@@ -11,7 +11,7 @@ public class Status {
   static char p = 'X';
 
   //============================================================================
-  // Check the near the drop position, if the count is < 4.
+  // The rows, columns, and diagonal tiles near the drop position.
 
   public static int check(char[][] board, int row, int col, char c) {
     int res = 0;
@@ -27,6 +27,7 @@ public class Status {
   }
 
   //============================================================================
+  // Get the max count from surrounding spaces.
 
   public static byte maxCount(char[][] board, int row, int col, char c) {
     byte count = 0;
@@ -56,7 +57,7 @@ public class Status {
   }
 
   //============================================================================
-  // Methods used to count consecutive tiles.
+  // Check by rows, or cols.
 
   public static byte checkDir(char[][] board, int stat, char c, int len, boolean cond) {
     byte count = 0;
@@ -87,6 +88,7 @@ public class Status {
   }
 
   //============================================================================
+  // Check diagonally, NE or SW.
 
   public static byte checkDiag(char[][] board, int row, int col, char c, int lenOne, int lenTwo, boolean condOne, boolean condTwo, int rowInc, int colInc) {
     byte count = 0;
@@ -122,6 +124,7 @@ public class Status {
   }
 
   //============================================================================
+  // Used to determine if the game ends in a tie.
 
   public static int countSpaces(char[][] board) {
     int spaces = 0;
@@ -136,6 +139,7 @@ public class Status {
   }
 
   //============================================================================
+  // Just prints the board.
 
   public static void printBoard(char[][] board) {
     for(int row = 0; row < board.length; row++) {
