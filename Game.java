@@ -6,8 +6,8 @@ public class Game {
   public static void main(String[] args) {
 
       Scanner sc = new Scanner(System.in);
-      //AI comp = new AI(7);
-      AI comp = new SecondUtility(7);
+
+      AI comp = new FirstUtility(7);
       run(sc,comp,decideFirst(sc));
 
   }
@@ -20,7 +20,7 @@ public class Game {
     int num = 0;
 
     while(one) {
-      System.out.println("Who plays first?\n1. Human ("+Problem.p+") 2. AI ("+Problem.c+")");
+      System.out.println("Who plays first?\n1. Human ("+Status.p+") 2. AI ("+Status.c+")");
       try {
         num = Integer.parseInt(sc.nextLine());
 
@@ -52,8 +52,8 @@ public class Game {
 
       if(first) {
         try {
-          num = playerMove(sc,board,Problem.p);
-          Problem.printBoard(board);
+          num = playerMove(sc,board,Status.p);
+          Status.printBoard(board);
         } catch(NumberFormatException e) {
           num = -1;
         }
@@ -64,8 +64,8 @@ public class Game {
       } else {
 
         if(num != 1) {
-          num = computerMove(comp,board,Problem.c);
-          Problem.printBoard(board);
+          num = computerMove(comp,board,Status.c);
+          Status.printBoard(board);
         }
       }
       if(!first) {
@@ -112,13 +112,13 @@ public class Game {
     }
 
     if(validate || row < 0) {
-      if(Problem.countSpaces(board) < 1) {
+      if(Status.countSpaces(board) < 1) {
         System.out.println("It's a tie!");
         return 1;
       }
       return -1;
     } else {
-      return Problem.check(board,row,col,c);
+      return Status.check(board,row,col,c);
     }
 
   }

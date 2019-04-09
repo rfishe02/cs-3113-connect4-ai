@@ -64,7 +64,7 @@ public class AI {
     int depth = 0;
     State s = maxValue(start, Integer.MIN_VALUE, Integer.MAX_VALUE,depth);
 
-    //Problem.printBoard(s.board);
+    //Status.printBoard(s.board);
     //System.out.println(s.v);
 
     if(s.board == null) {
@@ -95,7 +95,7 @@ public class AI {
 
       if(!explored.contains(i) && s.board[0][i] == '\u0000') {
 
-        call = testMove(s.board,i,Problem.c); // Avoid returning the response move.
+        call = testMove(s.board,i,Status.c); // Avoid returning the response move.
         reply = minValue(call,alpha,beta,depth+1);
 
         if(reply.v >= beta) {
@@ -135,7 +135,7 @@ public class AI {
 
       if(!explored.contains(i) && s.board[0][i] == '\u0000') {
 
-        reply = maxValue(testMove(s.board,i,Problem.p),alpha,beta,depth+1);
+        reply = maxValue(testMove(s.board,i,Status.p),alpha,beta,depth+1);
 
         if(reply.v <= alpha) {
           return reply;
