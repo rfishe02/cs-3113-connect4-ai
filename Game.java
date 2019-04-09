@@ -6,7 +6,9 @@ public class Game {
   public static void main(String[] args) {
 
       Scanner sc = new Scanner(System.in);
-      run(sc,decideFirst(sc));
+      //AI comp = new AI(7);
+      AI comp = new SecondUtility(7);
+      run(sc,comp,decideFirst(sc));
 
   }
 
@@ -41,8 +43,7 @@ public class Game {
 
   //============================================================================
 
-  public static void run(Scanner sc,boolean first){
-    AI comp = new AI(7);
+  public static void run(Scanner sc,AI comp,boolean first){
     char[][] board = new char[7][7];
     int num = 0;
 
