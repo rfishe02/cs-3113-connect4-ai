@@ -21,6 +21,7 @@ public class Game {
   }
 
   //============================================================================
+  // Ask the player who goes first.
 
   public static boolean decideFirst(Scanner sc) {
     boolean first = false;
@@ -50,6 +51,7 @@ public class Game {
   }
 
   //============================================================================
+  // Launches the game. The player may go first, or the AI may go first.
 
   public static void run(Scanner sc,AI comp,boolean first){
     char[][] board = new char[7][7];
@@ -102,6 +104,8 @@ public class Game {
   }
 
   //============================================================================
+  // Check to see if the move is valid. If it's valid, see if it caused a
+  // winning state. Else, the player typed the wrong response, or it's a tie.
 
   public static int moveCheck(char[][] board, int col, char c) {
     col = col-1;
