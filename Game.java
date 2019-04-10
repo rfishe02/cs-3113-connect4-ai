@@ -11,12 +11,14 @@ public class Game {
 
   public static void main(String[] args) {
 
+      //Status.testDir();
+      //Status.testDiag();
+
       Scanner sc = new Scanner(System.in);
 
       AI comp = new FirstUtility(7);
       //AI comp = new SecondUtility(7);
-
-      run(sc,comp,decideFirst(sc));
+      runTest(sc,comp,decideFirst(sc));
 
   }
 
@@ -53,7 +55,7 @@ public class Game {
   //============================================================================
   // Launches the game. The player may go first, or the AI may go first.
 
-  public static void run(Scanner sc,AI comp,boolean first){
+  public static void runTest(Scanner sc,AI comp,boolean first){
     char[][] board = new char[7][7];
     int num = 0;
 
@@ -63,6 +65,7 @@ public class Game {
       if(first) {
         try {
           num = playerMove(sc,board,Status.p);
+          //num = computerMove(comp,board,Status.p);
           Status.printBoard(board);
         } catch(NumberFormatException e) {
           num = -1;

@@ -33,22 +33,22 @@ public class Status {
     byte count = 0;
     byte tmp;
 
-    tmp = checkDir(board,col,c,board.length,true); // Check rows
+    tmp = checkDir(board,board.length,true,row,c); // Check rows
     if(tmp > count) {
       count = tmp;
     }
 
-    tmp = checkDir(board,row,c,board[0].length,false); // Check cols
+    tmp = checkDir(board,board[0].length,false,col,c); // Check cols
     if(tmp > count) {
       count = tmp;
     }
 
-    tmp = checkDiag(board,row,col,c,board.length,board[0].length,false,false,1,1); // SE
+    tmp = checkDiag(board,0,board[0].length,true,true,1,1,row,col,c); // NW
     if(tmp > count) {
       count = tmp;
     }
 
-    tmp = checkDiag(board,row,col,c,board.length,0,false,true,1,-1); // SW
+    tmp = checkDiag(board,0,0,true,false,1,-1,row,col,c); // NE
     if(tmp > count) {
       count = tmp;
     }
@@ -59,64 +59,67 @@ public class Status {
   //============================================================================
   // Check by rows, or cols.
 
-  public static byte checkDir(char[][] board, int stat, char c, int len, boolean cond) {
+  public static byte checkDir(char[][] board, int len, boolean cond, int stat, char c) {
+    byte max = 0;
     byte count = 0;
     int a = 0;
-    boolean flag = false;
 
-    while(count < 4 && a < len) {
-      if(dirCond(board,c,a,stat,cond)) {
-        count++;
-        flag = true;
-      } else if(flag) {
-        count = 0;
-        flag = false;
+    while(count < 5 && a < len) {
+      if(dirCond(board,cond,a,stat,c)) {
+        count++; // add to count, if there is a nearby match
+
+        if(count > max) {
+          max = count; // store the value of the longest chain
+        }
+      } else {
+        count = 0; // start a new chain
       }
       a++;
     }
-    return count;
+    return max;
   }
 
   //============================================================================
 
-  public static boolean dirCond(char[][] board, char c, int dyn, int stat, boolean type) {
-    if(type) {
-      return board[dyn][stat] == c; // Move rows
+  public static boolean dirCond(char[][] board, boolean cond, int dyn, int stat, char c) {
+    if(cond) {
+      return board[stat][dyn] == c; // compare by row
     } else {
-      return board[stat][dyn] == c; // Move cols
+      return board[dyn][stat] == c; // compare by column
     }
   }
 
   //============================================================================
-  // Check diagonally, NE or SW.
+  // Move NW, or NE, depending on the inputs.
 
-  public static byte checkDiag(char[][] board, int row, int col, char c, int lenOne, int lenTwo, boolean condOne, boolean condTwo, int rowInc, int colInc) {
+  public static byte checkDiag(char[][] board, int lenOne, int lenTwo, boolean condOne, boolean condTwo, int rowInc, int colInc, int row, int col, char c) {
+    byte max = 0;
     byte count = 0;
     int a = row;
     int b = col;
-    boolean flag = false;
-    while(diagCond(a-rowInc,board.length-lenOne,!condOne) && diagCond(b-colInc,board[0].length-lenTwo,!condTwo)) {
-      a-=rowInc;
-      b-=colInc;
-    } // Move to the end or beginning of the board, diagonally.
-    while(count < 4 && diagCond(a,lenOne,condOne) && diagCond(b,lenTwo,condTwo)) {
+
+    while(diagCond(a,lenOne,condOne) && diagCond(b,board[0].length-lenTwo,condTwo)) {
       if(board[a][b] == c) {
         count++;
-        flag = true;
-      } else if(flag) {
+
+        if(count > max) {
+          max = count;
+        }
+      } else {
         count = 0;
-        flag = false;
       }
-      a+=rowInc;
-      b+=colInc;
-    } // Count the number of consecutive tiles.
-    return count;
+
+      a-=rowInc;
+      b-=colInc;
+    }
+
+    return max;
   }
 
   //============================================================================
 
-  public static boolean diagCond(int a, int len, boolean type) {
-    if(type) {
+  public static boolean diagCond(int a, int len, boolean cond) {
+    if(cond) {
       return a >= len;
     } else {
       return a < len;
@@ -149,6 +152,53 @@ public class Status {
       }
       System.out.println();
     }
+  }
+
+  //============================================================================
+  // Test condition checking.
+
+  public static void testDir() {
+    char[][] b =
+    {
+      {'\u0000','\u0000','\u0000','\u0000','\u0000','Y','Y'},
+      {'Y','Y','Y','Z','Z','Z','Y'},
+      {'Y','Z','Z','Z','Z','Y','Y'},
+      {'\u0000','\u0000','\u0000','\u0000','\u0000','Z','Y'},
+      {'\u0000','\u0000','\u0000','\u0000','\u0000','Z','Z'},
+      {'\u0000','\u0000','\u0000','\u0000','\u0000','Z','Z'},
+      {'\u0000','\u0000','\u0000','\u0000','\u0000','Y','Z'}
+    };
+
+    Status.printBoard(b);
+
+    System.out.println("Max chain Y in row 1: "+maxCount(b, 1, 1, 'Y'));
+    System.out.println("Max chain Z in row 2: "+maxCount(b, 2, 1, 'Z'));
+
+    System.out.println("Max chain Z in col 5: "+maxCount(b, 5, 5, 'Z'));
+    System.out.println("Max chain Y in col 6: "+maxCount(b, 5, 6, 'Y'));
+
+  }
+
+  public static void testDiag() {
+    char[][] b =
+    {
+      {'Z','\u0000','\u0000','\u0000','\u0000','\u0000','Y'},
+      {'\u0000','Y','\u0000','\u0000','\u0000','Z','\u0000'},
+      {'\u0000','\u0000','Y','\u0000','Z','\u0000','\u0000'},
+      {'Y','\u0000','\u0000','Y','\u0000','\u0000','Z'},
+      {'\u0000','Y','Z','\u0000','Y','Z','\u0000'},
+      {'\u0000','Z','Y','\u0000','Z','Z','\u0000'},
+      {'Y','\u0000','\u0000','Y','\u0000','\u0000','Z'}
+    };
+
+    Status.printBoard(b);
+
+    //System.out.println("Max chain Z: "+maxCount(b, 6, 6, 'Z'));
+    //System.out.println("Max chain Y: "+maxCount(b, 6, 0, 'Y'));
+
+    System.out.println("Max chain Z: "+maxCount(b, 6, 3, 'Z'));
+    System.out.println("Max chain Y: "+maxCount(b, 6, 3, 'Y'));
+
   }
 
 }
