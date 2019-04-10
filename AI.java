@@ -69,6 +69,7 @@ public class AI {
   public int alphaBetaSearch(State start) {
     int depth = 0;
     State s = maxValue(start, Integer.MIN_VALUE, Integer.MAX_VALUE,depth);
+    System.out.println();
 
     if(s.board == null) {
       return -1;
@@ -88,17 +89,24 @@ public class AI {
       return s;
     }
 
-    HashSet<Integer> explored = new HashSet<>();
     State max = new State(null,0,0,Integer.MIN_VALUE);
     State call;
     State reply;
-    int i = rand.nextInt(moves);
 
-    while(explored.size() < moves) {
+    // Create an array of choices. As we make choices, swap them with the last
+    // element and decrement the end.
 
-      if(!explored.contains(i) && s.board[0][i] == '\u0000') {
+    int[] choices = {0,0,1,2,3,4,5,6};
+    int end = choices.length;
+    int tmp;
+    int i = 0;
 
-        call = testMove(s.board,i,Status.c); // Return the call, rather than the response.
+    while(end > 0) {
+      i = rand.nextInt(end);
+
+      if(s.board[0][choices[i]] == '\u0000') {
+
+        call = testMove(s.board,choices[i],Status.c); // Return the call, rather than the response.
         reply = minValue(call,alpha,beta,depth+1);
 
         if(reply.v >= beta) {
@@ -115,11 +123,19 @@ public class AI {
         }
 
       }
-      explored.add(i);
-      i = rand.nextInt(moves);
+
+      tmp = choices[end-1];
+      choices[end-1] = choices[i];
+      choices[i] = tmp;
+      end--;
     }
 
-    return max;
+    if(max.board == null) {
+      return s;
+    } else {
+      return max;
+    }
+
   }
 
   //============================================================================
@@ -129,16 +145,20 @@ public class AI {
       return s;
     }
 
-    HashSet<Integer> explored = new HashSet<>();
-    State max = new State(null,0,0,Integer.MAX_VALUE);
+    State max = new State(null,0,0,Integer.MIN_VALUE);
     State reply;
-    int i = rand.nextInt(moves);
 
-    while(explored.size() < moves) {
+    int[] choices = {0,0,1,2,3,4,5,6};
+    int end = choices.length;
+    int tmp;
+    int i = 0;
 
-      if(!explored.contains(i) && s.board[0][i] == '\u0000') {
+    while(end > 0) {
+      i = rand.nextInt(end);
 
-        reply = maxValue(testMove(s.board,i,Status.p),alpha,beta,depth+1);
+      if(s.board[0][choices[i]] == '\u0000') {
+
+        reply = maxValue(testMove(s.board,choices[i],Status.p),alpha,beta,depth+1);
 
         if(reply.v <= alpha) {
           return reply;
@@ -154,11 +174,17 @@ public class AI {
 
       }
 
-      explored.add(i);
-      i = rand.nextInt(moves);
+      tmp = choices[end-1];
+      choices[end-1] = choices[i];
+      choices[i] = tmp;
+      end--;
     }
 
-    return max;
+    if(max.board == null) {
+      return s;
+    } else {
+      return max;
+    }
   }
 
 }

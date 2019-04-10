@@ -6,6 +6,7 @@
 // Desc: The executable class that starts the game.
 
 import java.util.Scanner;
+import java.util.Random;
 
 public class Game {
 
@@ -17,8 +18,11 @@ public class Game {
       Scanner sc = new Scanner(System.in);
 
       AI comp = new FirstUtility(7);
+      AI comp2 = new FirstUtility(7);
       //AI comp = new SecondUtility(7);
-      runTest(sc,comp,decideFirst(sc));
+
+      Random rand = new Random();
+      runTest(comp,comp2,rand.nextBoolean());
 
   }
 
@@ -55,7 +59,7 @@ public class Game {
   //============================================================================
   // Launches the game. The player may go first, or the AI may go first.
 
-  public static void runTest(Scanner sc,AI comp,boolean first){
+  public static void playGame(Scanner sc,AI comp,boolean first){
     char[][] board = new char[7][7];
     int num = 0;
 
@@ -84,6 +88,33 @@ public class Game {
       if(!first) {
         first = true;
       }
+    }
+
+  }
+
+  //============================================================================
+  // Test the AI against another AI.
+
+  public static void runTest(AI comp,AI comp2,boolean first){
+    char[][] board = new char[7][7];
+    int num = 0;
+
+    //System.out.println("Enter 777 to quit.");
+    while(num != 1) {
+
+      if(first) {
+        num = computerMove(comp,board,Status.p);
+        Status.printBoard(board);
+      }
+
+      if(num != 1) {
+        num = computerMove(comp,board,Status.c);
+        Status.printBoard(board);
+      }
+      if(!first) {
+        first = true;
+      }
+
     }
 
   }
