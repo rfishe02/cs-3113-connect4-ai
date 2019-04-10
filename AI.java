@@ -69,9 +69,8 @@ public class AI {
   public int alphaBetaSearch(State start) {
     int depth = 0;
     State s = maxValue(start, Integer.MIN_VALUE, Integer.MAX_VALUE,depth);
-    System.out.println();
 
-    if(s.board == null) {
+    if(s == null) {
       return -1;
     } else {
       return s.col;
@@ -89,7 +88,7 @@ public class AI {
       return s;
     }
 
-    State max = new State(null,0,0,Integer.MIN_VALUE);
+    State max = null;
     State call;
     State reply;
 
@@ -110,7 +109,7 @@ public class AI {
         reply = minValue(call,alpha,beta,depth+1);
 
         if(reply.v >= beta) {
-          call.setValues(reply.board,reply.v);
+          call.v = reply.v;
           return call;
         }
 
@@ -118,8 +117,11 @@ public class AI {
           alpha = reply.v;
         }
 
+        if(max == null) {
+          max = new State(null,call.row,call.col,reply.v);
+        }
         if(reply.v > max.v) {
-          max.setValues(reply.board,call.row,call.col,reply.v);
+          max.setValues(null,call.row,call.col,reply.v);
         }
 
       }
@@ -130,7 +132,7 @@ public class AI {
       end--;
     }
 
-    if(max.board == null) {
+    if(max == null) {
       return s;
     } else {
       return max;
@@ -145,7 +147,7 @@ public class AI {
       return s;
     }
 
-    State max = new State(null,0,0,Integer.MIN_VALUE);
+    State max = null;
     State reply;
 
     int[] choices = {0,0,1,2,3,4,5,6};
@@ -168,8 +170,11 @@ public class AI {
           beta = reply.v;
         }
 
+        if(max == null) {
+          max = new State(null,reply.row,reply.col,reply.v);
+        }
         if(reply.v < max.v) {
-          max.setValues(reply.board,reply.row,reply.col,reply.v);
+          max.setValues(null,reply.row,reply.col,reply.v);
         }
 
       }
@@ -180,7 +185,7 @@ public class AI {
       end--;
     }
 
-    if(max.board == null) {
+    if(max == null) {
       return s;
     } else {
       return max;
