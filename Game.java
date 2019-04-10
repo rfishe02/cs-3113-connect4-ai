@@ -17,15 +17,15 @@ public class Game {
   public static void main(String[] args) {
 
       //Status.testDir();
-      Status.testDiag();
+      //Status.testDiag();
 
       //Scanner sc = new Scanner(System.in);
 
-      //AI comp = new FirstUtility(7,Status.p,Status.c);
-      //AI comp2 = new FirstUtility(7,Status.c,Status.p);
+      AI comp = new FirstUtility(7,Status.p,Status.c);
+      AI comp2 = new FirstUtility(7,Status.c,Status.p);
 
-      //Random rand = new Random();
-      //unTest(comp,comp2,rand.nextBoolean(),100);
+      Random rand = new Random();
+      runTest(comp,comp2,rand.nextBoolean(),100);
 
       //playGame(sc,comp2,decideFirst(sc));
 
