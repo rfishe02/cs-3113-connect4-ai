@@ -8,7 +8,7 @@
 public class Status {
 
   static char c = 'O';
-  static char p = 'X';
+  static char p = '+';
 
   //============================================================================
   // The rows, columns, and diagonal tiles near the drop position.
