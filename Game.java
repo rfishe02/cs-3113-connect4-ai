@@ -17,16 +17,17 @@ public class Game {
   public static void main(String[] args) {
 
       //Status.testDir();
-      //Status.testDiag();
+      Status.testDiag();
 
-      Scanner sc = new Scanner(System.in);
+      //Scanner sc = new Scanner(System.in);
 
-      AI comp = new FirstUtility(7);
-      AI comp2 = new FirstUtility(7);
-      //AI comp = new SecondUtility(7);
+      //AI comp = new FirstUtility(7,Status.p,Status.c);
+      //AI comp2 = new FirstUtility(7,Status.c,Status.p);
 
-      Random rand = new Random();
-      runTest(comp,comp2,rand.nextBoolean(),100);
+      //Random rand = new Random();
+      //unTest(comp,comp2,rand.nextBoolean(),100);
+
+      //playGame(sc,comp2,decideFirst(sc));
 
   }
 
@@ -87,8 +88,8 @@ public class Game {
         System.out.println("\nTry again.");
       } else {
 
-        if(num != 1) {
-          num = computerMove(comp,board,Status.c,true);
+        if(num < 1) {
+          num = computerMove(comp,board,comp.play,true);
           Status.printBoard(board);
         }
       }
@@ -127,14 +128,14 @@ public class Game {
 
           if(first) {
             //num = randomMove(board,Status.p);
-            num = computerMove(comp,board,Status.p,false);
+            num = computerMove(comp,board,comp.play,false);
             if(num == 1) {
               winner = 1;
             }
           }
 
           if(num != 1) {
-            num = computerMove(comp2,board,Status.c,false);
+            num = computerMove(comp2,board,comp2.play,false);
             if(num == 1) {
               winner = 2;
             }

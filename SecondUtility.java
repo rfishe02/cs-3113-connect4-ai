@@ -7,8 +7,8 @@
 
 public class SecondUtility extends AI {
 
-  public SecondUtility(int moves) {
-    super(moves);
+  public SecondUtility(int moves, char play, char opp) {
+    super(moves,play,opp);
   }
 
   //============================================================================

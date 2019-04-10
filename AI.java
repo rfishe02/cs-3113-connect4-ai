@@ -11,10 +11,14 @@ public class AI {
 
   Random rand;
   int moves;
+  char play;
+  char opp;
 
-  public AI(int moves) {
+  public AI(int moves, char play, char opp) {
     rand = new Random();
     this.moves = moves;
+    this.play = play;
+    this.opp = opp;
   }
 
   //============================================================================
@@ -82,7 +86,7 @@ public class AI {
   // For max, we return the call action rather than the response action.
   // We want the action that caused the state, rather than the response state.
 
-  public State maxValue(State s, int alpha, int beta, int depth, char p, char o) {
+  public State maxValue(State s, int alpha, int beta, int depth) {
     if(utilityCheck(s,depth)) {
       return s;
     }
@@ -104,8 +108,8 @@ public class AI {
 
       if(s.board[0][choices[i]] == '\u0000') {
 
-        call = testMove(s.board,choices[i],p); // Return the call, rather than the response.
-        reply = minValue(call,alpha,beta,depth+1,p,o);
+        call = testMove(s.board,choices[i],play); // Return the call, rather than the response.
+        reply = minValue(call,alpha,beta,depth+1);
 
         if(reply.v >= beta) {
           call.v = reply.v;
@@ -141,7 +145,7 @@ public class AI {
 
   //============================================================================
 
-  public State minValue(State s, int alpha, int beta, int depth, char p, char o) {
+  public State minValue(State s, int alpha, int beta, int depth) {
     if(utilityCheck(s,depth)) {
       return s;
     }
@@ -159,7 +163,7 @@ public class AI {
 
       if(s.board[0][choices[i]] == '\u0000') {
 
-        reply = maxValue(testMove(s.board,choices[i],o),alpha,beta,depth+1,p,o);
+        reply = maxValue(testMove(s.board,choices[i],opp),alpha,beta,depth+1);
 
         if(reply.v <= alpha) {
           return reply;

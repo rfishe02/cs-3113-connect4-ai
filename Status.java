@@ -45,12 +45,12 @@ public class Status {
       count = tmp;
     }
 
-    tmp = checkDiag(board,0,board[0].length,true,true,1,1,row,col,c); // NW
+    tmp = checkDiag(board,board.length,board[0].length,false,false,1,1,row,col,c); // SE
     if(tmp > count) {
       count = tmp;
     }
 
-    tmp = checkDiag(board,0,0,true,false,1,-1,row,col,c); // NE
+    tmp = checkDiag(board,board.length,0,false,true,1,-1,row,col,c); // SW
     if(tmp > count) {
       count = tmp;
     }
@@ -92,7 +92,7 @@ public class Status {
   }
 
   //============================================================================
-  // Move NW, or NE, depending on the inputs.
+  // Move diagonally, depending on the inputs.
 
   public static byte checkDiag(char[][] board, int lenOne, int lenTwo, boolean condOne, boolean condTwo, int rowInc, int colInc, int row, int col, char c) {
     byte max = 0;
@@ -100,7 +100,12 @@ public class Status {
     int a = row;
     int b = col;
 
-    while(diagCond(a,lenOne,condOne) && diagCond(b,board[0].length-lenTwo,condTwo)) {
+    while(diagCond(a-rowInc,board.length-lenOne,!condOne) && diagCond(b-colInc,board[0].length-lenTwo,!condTwo)) {
+      a-=rowInc;
+      b-=colInc;
+    } // Move to the end or beginning of the board, diagonally.
+
+    while(count < 4 && diagCond(a,lenOne,condOne) && diagCond(b,lenTwo,condTwo)) {
       if(board[a][b] == c) {
         count++;
 
@@ -111,8 +116,8 @@ public class Status {
         count = 0;
       }
 
-      a-=rowInc;
-      b-=colInc;
+      a+=rowInc;
+      b+=colInc;
     }
 
     return max;
@@ -198,8 +203,8 @@ public class Status {
     //System.out.println("Max chain Z: "+maxCount(b, 6, 6, 'Z'));
     //System.out.println("Max chain Y: "+maxCount(b, 6, 0, 'Y'));
 
-    System.out.println("Max chain Z: "+maxCount(b, 6, 3, 'Z'));
-    System.out.println("Max chain Y: "+maxCount(b, 6, 3, 'Y'));
+    System.out.println("Max chain Z: "+maxCount(b, 3, 6, 'Z'));
+    System.out.println("Max chain Y: "+maxCount(b, 3, 3, 'Y'));
 
   }
 
