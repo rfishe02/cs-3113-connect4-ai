@@ -8,6 +8,10 @@
 import java.util.Scanner;
 import java.util.Random;
 
+import java.io.PrintWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class Game {
 
   public static void main(String[] args) {
@@ -22,7 +26,7 @@ public class Game {
       //AI comp = new SecondUtility(7);
 
       Random rand = new Random();
-      runTest(comp,comp2,rand.nextBoolean());
+      runTest(comp,comp2,rand.nextBoolean(),100);
 
   }
 
@@ -58,18 +62,21 @@ public class Game {
 
   //============================================================================
   // Launches the game. The player may go first, or the AI may go first.
+  // -1: Improper move.
+  // 0: Starting state.
+  // 1: A player won.
+  // 2: There was a tie.
 
   public static void playGame(Scanner sc,AI comp,boolean first){
     char[][] board = new char[7][7];
     int num = 0;
 
     //System.out.println("Enter 777 to quit.");
-    while(num != 1) {
+    while(num < 1) {
 
       if(first) {
         try {
           num = playerMove(sc,board,Status.p);
-          //num = computerMove(comp,board,Status.p);
           Status.printBoard(board);
         } catch(NumberFormatException e) {
           num = -1;
@@ -81,7 +88,7 @@ public class Game {
       } else {
 
         if(num != 1) {
-          num = computerMove(comp,board,Status.c);
+          num = computerMove(comp,board,Status.c,true);
           Status.printBoard(board);
         }
       }
@@ -94,27 +101,59 @@ public class Game {
 
   //============================================================================
   // Test the AI against another AI.
+  // -1: Improper move.
+  // 0: Starting state.
+  // 1: A player won.
+  // 2: There was a tie.
 
-  public static void runTest(AI comp,AI comp2,boolean first){
-    char[][] board = new char[7][7];
-    int num = 0;
+  public static void runTest(AI comp,AI comp2,boolean first,int rounds){
 
-    //System.out.println("Enter 777 to quit.");
-    while(num != 1) {
+    try {
 
-      if(first) {
-        num = computerMove(comp,board,Status.p);
-        Status.printBoard(board);
+      PrintWriter p = new PrintWriter(new FileWriter("outcome.txt"));
+      char[][] board;
+      int winner = 0;
+      int num = 0;
+
+      p.write("round,win\n");
+
+      for(int i = 0; i < rounds; i++) {
+
+        board = new char[7][7];
+        num = 0;
+        winner = 0;
+
+        while(num < 1) {
+
+          if(first) {
+            //num = randomMove(board,Status.p);
+            num = computerMove(comp,board,Status.p,false);
+            if(num == 1) {
+              winner = 1;
+            }
+          }
+
+          if(num != 1) {
+            num = computerMove(comp2,board,Status.c,false);
+            if(num == 1) {
+              winner = 2;
+            }
+          }
+          if(!first) {
+            first = true;
+          }
+
+        }
+
+        p.write(i+","+winner+"\n");
+        //Status.printBoard(board);
+
       }
 
-      if(num != 1) {
-        num = computerMove(comp,board,Status.c);
-        Status.printBoard(board);
-      }
-      if(!first) {
-        first = true;
-      }
+      p.close();
 
+    } catch(IOException Ex) {
+      Ex.printStackTrace();
     }
 
   }
@@ -125,23 +164,43 @@ public class Game {
     System.out.println("\nChoose a col, Player.");
     int num = Integer.parseInt(sc.nextLine());
 
-    return moveCheck(board,num,c);
+    return moveCheck(board,num,c,true);
   }
 
   //============================================================================
 
-  public static int computerMove(AI comp, char[][] board, char c) {
-    System.out.println("\nThe Computer acts...");
+  public static int computerMove(AI comp, char[][] board, char c, boolean phrase) {
+    if(phrase) {
+      System.out.println("\nThe computer acts...");
+    }
     int num = comp.alphaBetaSearch(new State(board,0,0,0));
 
-    return moveCheck(board,num+1,c);
+    return moveCheck(board,num+1,c,phrase);
+  }
+
+  //============================================================================
+
+  public static int randomMove(char[][] board, char c) {
+
+    Random rand = new Random();
+    int[] moves = new int[8];
+    int size = 0;
+
+    for(int i = 0; i < board.length; i++) {
+      if(board[0][i] == '\u0000') {
+        moves[i+1] = i+1;
+        size++;
+      }
+    }
+
+    return moveCheck(board,moves[rand.nextInt(size)],c,false);
   }
 
   //============================================================================
   // Check to see if the move is valid. If it's valid, see if it caused a
   // winning state. Else, the player typed the wrong response, or it's a tie.
 
-  public static int moveCheck(char[][] board, int col, char c) {
+  public static int moveCheck(char[][] board, int col, char c, boolean phrase) {
     col = col-1;
     int row = 0;
     boolean validate = false;
@@ -159,12 +218,14 @@ public class Game {
 
     if(validate || row < 0) {
       if(Status.countSpaces(board) < 1) {
-        System.out.println("It's a tie!");
-        return 1;
+        if(phrase) {
+          System.out.println("It's a tie!");
+        }
+        return 2;
       }
       return -1;
     } else {
-      return Status.check(board,row,col,c);
+      return Status.check(board,row,col,c,phrase);
     }
 
   }

@@ -5,7 +5,6 @@
 // Date: 4-9-19
 // Desc: Holds the methods the AI uses to think.
 
-import java.util.HashSet;
 import java.util.Random;
 
 public class AI {
@@ -83,7 +82,7 @@ public class AI {
   // For max, we return the call action rather than the response action.
   // We want the action that caused the state, rather than the response state.
 
-  public State maxValue(State s, int alpha, int beta, int depth) {
+  public State maxValue(State s, int alpha, int beta, int depth, char p, char o) {
     if(utilityCheck(s,depth)) {
       return s;
     }
@@ -105,8 +104,8 @@ public class AI {
 
       if(s.board[0][choices[i]] == '\u0000') {
 
-        call = testMove(s.board,choices[i],Status.c); // Return the call, rather than the response.
-        reply = minValue(call,alpha,beta,depth+1);
+        call = testMove(s.board,choices[i],p); // Return the call, rather than the response.
+        reply = minValue(call,alpha,beta,depth+1,p,o);
 
         if(reply.v >= beta) {
           call.v = reply.v;
@@ -142,7 +141,7 @@ public class AI {
 
   //============================================================================
 
-  public State minValue(State s, int alpha, int beta, int depth) {
+  public State minValue(State s, int alpha, int beta, int depth, char p, char o) {
     if(utilityCheck(s,depth)) {
       return s;
     }
@@ -160,7 +159,7 @@ public class AI {
 
       if(s.board[0][choices[i]] == '\u0000') {
 
-        reply = maxValue(testMove(s.board,choices[i],Status.p),alpha,beta,depth+1);
+        reply = maxValue(testMove(s.board,choices[i],o),alpha,beta,depth+1,p,o);
 
         if(reply.v <= alpha) {
           return reply;

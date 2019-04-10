@@ -13,13 +13,15 @@ public class Status {
   //============================================================================
   // The rows, columns, and diagonal tiles near the drop position.
 
-  public static int check(char[][] board, int row, int col, char c) {
+  public static int check(char[][] board, int row, int col, char c, boolean phrase) {
     int res = 0;
     if(maxCount(board,row,col,c) > 3) {
-      if(c == p) {
-        System.out.println("The Player Wins!");
-      } else {
-        System.out.println("The Computer Wins!");
+      if(phrase) {
+        if(c == p) {
+          System.out.println("The Player Wins!");
+        } else {
+          System.out.println("The Computer Wins!");
+        }
       }
       res = 1;
     }
