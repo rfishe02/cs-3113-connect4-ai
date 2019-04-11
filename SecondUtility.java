@@ -16,37 +16,33 @@ public class SecondUtility extends AI {
   // We want a scenario in which the opponent is really good, so we reverse
   // the count for the player. It becomes a smaller value that min would prefer.
 
-  public int getUtility(State s, char c) {
+  public void setUtility(State s, char c) {
 
     int res = Status.maxCount(s.board,s.row,s.col,c);
 
-    if(res == 3) {
-      s.weight= 3;
-    } else if(res == 2 || res == 4) {
-      s.weight= 2;
-    } else if(res == 1 || res == 5) {
-      s.weight= 1;
+    s.base = res;
+
+    if(s.col == 3) {
+      s.v = res + 2;
+    } else if(s.col == 2 || s.col == 4) {
+      s.v = res + 1;
+    } else if(s.col == 1 || s.col == 5) {
+      s.v = res + 0;
     } else {
-      s.weight= 0;
+      s.v = res + -1;
     }
 
     if(c == o) {
-      s.weight = s.weight * -1;
-      return res * -1;
+      s.v = s.v * -1;
     }
 
-    return res;
   }
 
   //============================================================================
   // The state is a terminal state if a player wins, or if it exceeds depth.
 
   public boolean utilityCheck(State s, int depth) {
-    if(s.v < 0) {
-      return s.v < -3 || depth > 5;
-    } else {
-      return s.v > 3 || depth > 5;
-    }
+    return s.base > 3 || depth > 5;
   }
 
 }

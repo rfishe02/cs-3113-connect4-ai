@@ -19,7 +19,7 @@ public class Game {
       //Status.testDiag();
 
       AI comp = new FirstUtility(7,Status.p,Status.c);
-      AI comp2 = new SecondUtility(7,Status.c,Status.p);
+      AI comp2 = new SecondUtility(7,Status.p,Status.c);
 
       runTest(comp,comp2,100);
 

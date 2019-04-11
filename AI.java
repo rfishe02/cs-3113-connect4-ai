@@ -23,8 +23,8 @@ public class AI {
 
   //============================================================================
 
-  public int getUtility(State s, char c) {
-    return 0;
+  public void setUtility(State s, char c) {
+
   }
 
   //============================================================================
@@ -175,7 +175,7 @@ public class AI {
     }
 
     State s = new State(board,row,col);
-    s.v = getUtility(s, c);
+    setUtility(s, c);
     return s;
   }
 
