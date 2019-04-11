@@ -11,14 +11,14 @@ public class AI {
 
   Random rand;
   int moves;
-  char play;
-  char opp;
+  char p;
+  char o;
 
-  public AI(int moves, char play, char opp) {
+  public AI(int moves, char p, char o) {
     rand = new Random();
     this.moves = moves;
-    this.play = play;
-    this.opp = opp;
+    this.p = p;
+    this.o = o;
   }
 
   //============================================================================
@@ -36,7 +36,7 @@ public class AI {
   //============================================================================
   // Use this method to generate potential states.
 
-  public State testMove(char[][] state, int col, char c) {
+  public State simMove(char[][] state, int col, char c) {
     char[][] board = deepCopy(state);
     int row;
 
@@ -69,14 +69,15 @@ public class AI {
   //============================================================================
   // This is the start of the alpha beta search algorithm.
 
-  public int alphaBetaSearch(State start) {
+  public int alphaBetaSearch(char[][] board) {
     int depth = 0;
-    State s = maxValue(start, Integer.MIN_VALUE, Integer.MAX_VALUE,depth);
+    State s = new State(board,0,0,0);
+    State x = maxValue(s, Integer.MIN_VALUE, Integer.MAX_VALUE, depth);
 
-    if(s == null) {
-      return -1;
+    if(x == null) {
+      return -1; // Will flag the moveCheck
     } else {
-      return s.col;
+      return x.col;
     }
 
   }
@@ -101,24 +102,15 @@ public class AI {
     int[] choices = {0,0,1,2,3,4,5,6};
     int end = choices.length;
     int tmp;
-    int i = 0;
+    int x = 0;
 
     while(end > 0) {
-      i = rand.nextInt(end);
+      x = rand.nextInt(end);
 
-      if(s.board[0][choices[i]] == '\u0000') {
+      if(s.board[0][choices[x]] == '\u0000') {
 
-        call = testMove(s.board,choices[i],play); // Return the call, rather than the response.
+        call = simMove(s.board,choices[x],p);
         reply = minValue(call,alpha,beta,depth+1);
-
-        if(reply.v >= beta) {
-          call.v = reply.v;
-          return call;
-        }
-
-        if(reply.v > alpha) {
-          alpha = reply.v;
-        }
 
         if(max == null) {
           max = new State(null,call.row,call.col,reply.v);
@@ -127,11 +119,18 @@ public class AI {
           max.setValues(null,call.row,call.col,reply.v);
         }
 
-      }
+        if(reply.v >= beta) {
+          return max; // Return the call from max, rather than the response.
+        }
 
+        if(reply.v > alpha) {
+          alpha = reply.v;
+        }
+
+      }
       tmp = choices[end-1];
-      choices[end-1] = choices[i];
-      choices[i] = tmp;
+      choices[end-1] = choices[x];
+      choices[x] = tmp;
       end--;
     }
 
@@ -156,22 +155,14 @@ public class AI {
     int[] choices = {0,0,1,2,3,4,5,6};
     int end = choices.length;
     int tmp;
-    int i = 0;
+    int x = 0;
 
     while(end > 0) {
-      i = rand.nextInt(end);
+      x = rand.nextInt(end);
 
-      if(s.board[0][choices[i]] == '\u0000') {
+      if(s.board[0][choices[x]] == '\u0000') {
 
-        reply = maxValue(testMove(s.board,choices[i],opp),alpha,beta,depth+1);
-
-        if(reply.v <= alpha) {
-          return reply;
-        }
-
-        if(reply.v < beta) {
-          beta = reply.v;
-        }
+        reply = maxValue(simMove(s.board,choices[x],o),alpha,beta,depth+1);
 
         if(max == null) {
           max = new State(null,reply.row,reply.col,reply.v);
@@ -180,11 +171,18 @@ public class AI {
           max.setValues(null,reply.row,reply.col,reply.v);
         }
 
-      }
+        if(reply.v <= alpha) {
+          return max;
+        }
 
+        if(reply.v < beta) {
+          beta = reply.v;
+        }
+
+      }
       tmp = choices[end-1];
-      choices[end-1] = choices[i];
-      choices[i] = tmp;
+      choices[end-1] = choices[x];
+      choices[x] = tmp;
       end--;
     }
 

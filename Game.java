@@ -48,7 +48,6 @@ public class Game {
             first = true;
           }
           one = false;
-
         } else {
           System.out.println("Choose the number shown.");
         }
@@ -85,15 +84,16 @@ public class Game {
       if(num == -1) {
         System.out.println("\nTry again.");
       } else {
-
         if(num < 1) {
-          num = computerMove(comp,board,comp.play,true);
+          num = computerMove(comp,board,comp.p,true);
           Status.printBoard(board);
         }
       }
+
       if(!first) {
         first = true;
       }
+
     }
 
   }
@@ -109,14 +109,14 @@ public class Game {
 
     try {
 
-      PrintWriter p = new PrintWriter(new FileWriter("random.txt"));
+      PrintWriter pw = new PrintWriter(new FileWriter("random.txt"));
       Random rand = new Random();
       char[][] board;
       int winner = 0;
       int num = 0;
       boolean first;
 
-      p.write("round,win\n");
+      pw.write("round,win\n");
 
       for(int i = 0; i < rounds; i++) {
 
@@ -129,14 +129,14 @@ public class Game {
 
           if(first) {
             num = randomMove(board,Status.p);
-            //num = computerMove(comp,board,comp.play,false);
+            //num = computerMove(comp,board,comp.p,false);
             if(num == 1) {
               winner = 1;
             }
           }
 
           if(num != 1) {
-            num = computerMove(comp2,board,comp2.play,false);
+            num = computerMove(comp2,board,comp2.p,false);
             if(num == 1) {
               winner = 2;
             }
@@ -147,12 +147,11 @@ public class Game {
 
         }
 
-        p.write(i+","+winner+"\n");
-        //Status.printBoard(board);
+        pw.write(i+","+winner+"\n");
 
       }
 
-      p.close();
+      pw.close();
 
     } catch(IOException Ex) {
       Ex.printStackTrace();
@@ -175,7 +174,7 @@ public class Game {
     if(phrase) {
       System.out.println("\nThe computer acts...");
     }
-    int num = comp.alphaBetaSearch(new State(board,0,0,0));
+    int num = comp.alphaBetaSearch(board);
 
     return moveCheck(board,num+1,c,phrase);
   }
@@ -190,7 +189,7 @@ public class Game {
 
     for(int i = 0; i < board.length; i++) {
       if(board[0][i] == '\u0000') {
-        moves[i+1] = i+1;
+        moves[size+1] = i+1;
         size++;
       }
     }

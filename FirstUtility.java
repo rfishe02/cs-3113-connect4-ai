@@ -19,7 +19,7 @@ public class FirstUtility extends AI {
   // the count for the player. It becomes a smaller value that min would prefer.
 
   public int getUtility(State s, char c) {
-    if(c == opp) {
+    if(c == o) {
       return Status.maxCount(s.board,s.row,s.col,c) * -1;
     } else {
       return Status.maxCount(s.board,s.row,s.col,c);
