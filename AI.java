@@ -34,39 +34,6 @@ public class AI {
   }
 
   //============================================================================
-  // Use this method to generate potential states.
-
-  public State simMove(char[][] state, int col, char c) {
-    char[][] board = deepCopy(state);
-    int row;
-
-    for(row = board.length-1; row >= 0; row--) {
-      if(board[row][col] == '\u0000') {
-        board[row][col] = c;
-        break;
-      }
-    }
-
-    State s = new State(board,row,col,0);
-    s.v = getUtility(s, c);
-    return s;
-  }
-
-  //============================================================================
-
-  public char[][] deepCopy(char[][] board) {
-    char[][] copy = new char[board.length][board[0].length];
-
-    for(int row = 0; row < board.length; row++) {
-      for(int col = 0; col < board[0].length; col++) {
-        copy[row][col] = board[row][col];
-      }
-    }
-
-    return copy;
-  }
-
-  //============================================================================
   // This is the start of the alpha beta search algorithm.
 
   public int alphaBetaSearch(char[][] board) {
@@ -191,6 +158,39 @@ public class AI {
     } else {
       return max;
     }
+  }
+
+  //============================================================================
+  // Use this method to generate potential states.
+
+  public State simMove(char[][] state, int col, char c) {
+    char[][] board = deepCopy(state);
+    int row;
+
+    for(row = board.length-1; row >= 0; row--) {
+      if(board[row][col] == '\u0000') {
+        board[row][col] = c;
+        break;
+      }
+    }
+
+    State s = new State(board,row,col);
+    s.v = getUtility(s, c);
+    return s;
+  }
+
+  //============================================================================
+
+  public char[][] deepCopy(char[][] board) {
+    char[][] copy = new char[board.length][board[0].length];
+
+    for(int row = 0; row < board.length; row++) {
+      for(int col = 0; col < board[0].length; col++) {
+        copy[row][col] = board[row][col];
+      }
+    }
+
+    return copy;
   }
 
 }

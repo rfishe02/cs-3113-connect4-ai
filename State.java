@@ -9,7 +9,15 @@ public class State {
   char[][] board;
   int row;
   int col;
-  int v;
+  int v; // The weighted value.
+
+  int base; // The base value, without weight.
+
+  public State(char[][] state, int row, int col) {
+    board = state;
+    this.row = row;
+    this.col = col;
+  }
 
   public State(char[][] state, int row, int col, int v) {
     board = state;
@@ -18,15 +26,15 @@ public class State {
     this.v = v;
   }
 
+  public void setValues(char[][] board, int v) {
+    this.board = board;
+    this.v = v;
+  }
+
   public void setValues(char[][] board, int row, int col, int v) {
     this.board = board;
     this.row = row;
     this.col = col;
-    this.v = v;
-  }
-
-  public void setValues(char[][] board, int v) {
-    this.board = board;
     this.v = v;
   }
 
