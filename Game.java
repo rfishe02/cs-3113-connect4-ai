@@ -18,15 +18,14 @@ public class Game {
       //Status.testDir();
       //Status.testDiag();
 
-      Scanner sc = new Scanner(System.in);
-
-      //AI comp = new FirstUtility(7,Status.p,Status.c);
+      AI comp = new FirstUtility(7,Status.p,Status.c);
       AI comp2 = new FirstUtility(7,Status.c,Status.p);
 
-      //runTest(comp,comp2,100);
+      runTest(comp,comp2,100);
 
-      playGame(sc,comp2,decideFirst(sc));
-      sc.close();
+      //Scanner sc = new Scanner(System.in);
+      //playGame(sc,comp2,decideFirst(sc));
+      //sc.close();
 
   }
 
@@ -109,7 +108,7 @@ public class Game {
 
     try {
 
-      PrintWriter pw = new PrintWriter(new FileWriter("random.txt"));
+      PrintWriter pw = new PrintWriter(new FileWriter("outcome.txt"));
       Random rand = new Random();
       char[][] board;
       int winner = 0;
@@ -128,8 +127,8 @@ public class Game {
         while(num < 1) {
 
           if(first) {
-            num = randomMove(board,Status.p);
-            //num = computerMove(comp,board,comp.p,false);
+            //num = randomMove(board,Status.p);
+            num = computerMove(comp,board,comp.p,false);
             if(num == 1) {
               winner = 1;
             }
