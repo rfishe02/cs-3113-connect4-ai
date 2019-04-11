@@ -109,7 +109,7 @@ public class Game {
 
     try {
 
-      PrintWriter p = new PrintWriter(new FileWriter("outcome.txt"));
+      PrintWriter p = new PrintWriter(new FileWriter("random.txt"));
       Random rand = new Random();
       char[][] board;
       int winner = 0;
@@ -128,8 +128,8 @@ public class Game {
         while(num < 1) {
 
           if(first) {
-            //num = randomMove(board,Status.p);
-            num = computerMove(comp,board,comp.play,false);
+            num = randomMove(board,Status.p);
+            //num = computerMove(comp,board,comp.play,false);
             if(num == 1) {
               winner = 1;
             }
