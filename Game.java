@@ -18,15 +18,15 @@ public class Game {
       //Status.testDir();
       //Status.testDiag();
 
-      //Scanner sc = new Scanner(System.in);
+      Scanner sc = new Scanner(System.in);
 
-      AI comp = new FirstUtility(7,Status.p,Status.c);
+      //AI comp = new FirstUtility(7,Status.p,Status.c);
       AI comp2 = new FirstUtility(7,Status.c,Status.p);
 
-      runTest(comp,comp2,100);
+      //runTest(comp,comp2,100);
 
-      //playGame(sc,comp2,decideFirst(sc));
-      //sc.close();
+      playGame(sc,comp2,decideFirst(sc));
+      sc.close();
 
   }
 
