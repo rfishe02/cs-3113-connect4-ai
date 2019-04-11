@@ -23,13 +23,13 @@ public class SecondUtility extends AI {
     s.base = res;
 
     if(s.col == 3) {
-      s.v = res + 2;
+      s.v = res + 3;
     } else if(s.col == 2 || s.col == 4) {
-      s.v = res + 1;
+      s.v = res + 2;
     } else if(s.col == 1 || s.col == 5) {
-      s.v = res + 0;
+      s.v = res + 1;
     } else {
-      s.v = res + -1;
+      s.v = res + 0;
     }
 
     if(c == o) {
