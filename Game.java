@@ -7,7 +7,6 @@
 
 import java.util.Scanner;
 import java.util.Random;
-
 import java.io.PrintWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -24,10 +23,10 @@ public class Game {
       AI comp = new FirstUtility(7,Status.p,Status.c);
       AI comp2 = new FirstUtility(7,Status.c,Status.p);
 
-      Random rand = new Random();
-      runTest(comp,comp2,rand.nextBoolean(),100);
+      runTest(comp,comp2,100);
 
       //playGame(sc,comp2,decideFirst(sc));
+      //sc.close();
 
   }
 
@@ -72,7 +71,6 @@ public class Game {
     char[][] board = new char[7][7];
     int num = 0;
 
-    //System.out.println("Enter 777 to quit.");
     while(num < 1) {
 
       if(first) {
@@ -107,14 +105,16 @@ public class Game {
   // 1: A player won.
   // 2: There was a tie.
 
-  public static void runTest(AI comp,AI comp2,boolean first,int rounds){
+  public static void runTest(AI comp,AI comp2,int rounds){
 
     try {
 
       PrintWriter p = new PrintWriter(new FileWriter("outcome.txt"));
+      Random rand = new Random();
       char[][] board;
       int winner = 0;
       int num = 0;
+      boolean first;
 
       p.write("round,win\n");
 
@@ -123,6 +123,7 @@ public class Game {
         board = new char[7][7];
         num = 0;
         winner = 0;
+        first = rand.nextBoolean();
 
         while(num < 1) {
 

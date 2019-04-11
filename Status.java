@@ -162,7 +162,7 @@ public class Status {
   }
 
   //============================================================================
-  // Test condition checking.
+  // Used to test the above methods.
 
   public static void testDir() {
     char[][] b =
