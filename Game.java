@@ -23,8 +23,14 @@ public class Game {
       AI comp2 = new SecondUtility(7,Status.c,Status.p);
       runTest(comp,comp2,300);*/
 
+      /*
       Scanner sc = new Scanner(System.in);
       AI comp2 = new SecondUtility(7,Status.c,Status.p);
+      playGame(sc,comp2,decideFirst(sc));
+      sc.close();*/
+      
+      Scanner sc = new Scanner(System.in);
+      AI comp2 = new FirstUtility(7,Status.c,Status.p);
       playGame(sc,comp2,decideFirst(sc));
       sc.close();
 

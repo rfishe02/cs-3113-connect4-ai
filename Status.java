@@ -9,6 +9,7 @@ public class Status {
 
   static char c = 'O';
   static char p = '+';
+  static char blank = '\u0000';
 
   //============================================================================
   // The rows, columns, and diagonal tiles near the drop position.
@@ -139,7 +140,7 @@ public class Status {
   public static int countSpaces(char[][] board) {
     int spaces = 0;
     for(int col = 0; col < board[0].length; col++) {
-      if(board[0][col] == '\u0000') {
+      if(board[0][col] == blank) {
         spaces++;
       }
     }
@@ -150,10 +151,17 @@ public class Status {
   // Just prints the board.
 
   public static void printBoard(char[][] board) {
-    System.out.println(" "+1+"   "+2+"   "+3+"   "+4+"   "+5+"   "+6+"   "+7);
+    System.out.println(" "+1+"  "+2+"  "+3+"  "+4+"  "+5+"  "+6+"  "+7);
     for(int row = 0; row < board.length; row++) {
       for(int col = 0; col < board[0].length; col++) {
-        System.out.print("["+board[row][col]+"] ");
+        //System.out.print("["+board[row][col]+"] ");
+        
+        if(board[row][col] == blank) {
+            System.out.printf("[%1s]"," ");
+        } else {
+            System.out.printf("[%1s]",board[row][col]);
+        }
+        
       }
       System.out.println();
     }
@@ -162,16 +170,17 @@ public class Status {
   //============================================================================
   // Used to test the above methods.
 
+  /*
   public static void testDir() {
     char[][] b =
     {
-      {'\u0000','\u0000','\u0000','\u0000','\u0000','Y','Y'},
+      {blank,blank,blank,blank,blank,'Y','Y'},
       {'Y','Y','Y','Z','Z','Z','Y'},
       {'Y','Z','Z','Z','Z','Y','Y'},
-      {'\u0000','\u0000','\u0000','\u0000','\u0000','Z','Y'},
-      {'\u0000','\u0000','\u0000','\u0000','\u0000','Z','Z'},
-      {'\u0000','\u0000','\u0000','\u0000','\u0000','Z','Z'},
-      {'\u0000','\u0000','\u0000','\u0000','\u0000','Y','Z'}
+      {blank,blank,blank,blank,blank,'Z','Y'},
+      {blank,blank,blank,blank,blank,'Z','Z'},
+      {blank,blank,blank,blank,blank,'Z','Z'},
+      {blank,blank,blank,blank,blank,'Y','Z'}
     };
 
     Status.printBoard(b);
@@ -187,13 +196,13 @@ public class Status {
   public static void testDiag() {
     char[][] b =
     {
-      {'Z','\u0000','\u0000','\u0000','\u0000','\u0000','Y'},
-      {'\u0000','Y','\u0000','\u0000','\u0000','Z','\u0000'},
-      {'\u0000','\u0000','Y','\u0000','Z','\u0000','\u0000'},
-      {'Y','\u0000','\u0000','Y','\u0000','\u0000','Z'},
-      {'\u0000','Y','Z','\u0000','Y','Z','\u0000'},
-      {'\u0000','Z','Y','\u0000','Z','Z','\u0000'},
-      {'Y','\u0000','\u0000','Y','\u0000','\u0000','Z'}
+      {'Z',blank,blank,blank,blank,blank,'Y'},
+      {blank,'Y',blank,blank,blank,'Z',blank},
+      {blank,blank,'Y',blank,'Z',blank,blank},
+      {'Y',blank,blank,'Y',blank,blank,'Z'},
+      {blank,'Y','Z',blank,'Y','Z',blank},
+      {blank,'Z','Y',blank,'Z','Z',blank},
+      {'Y',blank,blank,'Y',blank,blank,'Z'}
     };
 
     Status.printBoard(b);
@@ -204,6 +213,6 @@ public class Status {
     System.out.println("Max chain Z: "+maxCount(b, 3, 6, 'Z'));
     System.out.println("Max chain Y: "+maxCount(b, 3, 3, 'Y'));
 
-  }
+  }*/
 
 }
